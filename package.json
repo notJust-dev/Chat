@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@clerk/clerk-expo": "^2.16.4",
     "@expo/metro-config": "~54.0.2",
     "@react-navigation/drawer": "^7.5.0",
     "babel-preset-expo": "~54.0.0",
@@ -16,6 +17,7 @@
     "expo-constants": "~18.0.9",
     "expo-linking": "~8.0.8",
     "expo-router": "~6.0.12",
+    "expo-secure-store": "^15.0.7",
     "expo-status-bar": "~3.0.8",
     "nativewind": "^4.2.1",
     "react": "19.1.0",
