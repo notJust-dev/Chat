@@ -1,10 +1,9 @@
 import { Tabs } from 'expo-router';
 import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
+import { Platform } from 'react-native';
 
 export default function TabsLayout() {
-  const isGlass = true;
-
-  if (isGlass) {
+  if (Platform.OS === 'ios') {
     return (
       <NativeTabs>
         <NativeTabs.Trigger name='chats'>
