@@ -12,8 +12,8 @@ export default function HomeLayout() {
         options={{
           title: 'Channel',
           headerBackButtonDisplayMode: 'minimal',
-          headerLargeTitle: true,
-          headerTransparent: true,
+          // headerLargeTitle: true,
+          // headerTransparent: true,
         }}
       />
     </Stack>
