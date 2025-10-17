@@ -118,6 +118,8 @@ const messages: Message[] = [
     id: 'm-5',
     content: 'Wow, that looks incredible!',
     createdAt: '2025-01-20T09:25:00Z',
+    image: 'https://picsum.photos/id/1019/400/300',
+
     user: {
       id: 'u-1',
       name: 'Sarah Chen',
