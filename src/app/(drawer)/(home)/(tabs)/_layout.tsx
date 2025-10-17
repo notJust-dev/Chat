@@ -1,19 +1,20 @@
-import { Tabs } from 'expo-router';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
 
 export default function TabsLayout() {
   return (
-    <Tabs>
-      <Tabs.Screen
-        name='index'
-        options={{
-          title: 'Chat',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name='chatbox' size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen name='settings' options={{ title: 'Setting' }} />
-    </Tabs>
+    <NativeTabs>
+      <NativeTabs.Trigger name='chats'>
+        <Label>Chats</Label>
+        <Icon sf='message.fill' drawable='custom_android_drawable' />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name='settings'>
+        <Icon sf='gear' drawable='custom_settings_drawable' />
+        <Label>Settings</Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name='search' role='search'>
+        <Label>Search</Label>
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
 }
