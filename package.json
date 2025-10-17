@@ -16,6 +16,7 @@
     "date-fns": "^4.1.0",
     "expo": "~54.0.13",
     "expo-constants": "~18.0.9",
+    "expo-image-picker": "~17.0.8",
     "expo-linking": "~8.0.8",
     "expo-router": "~6.0.12",
     "expo-secure-store": "^15.0.7",
