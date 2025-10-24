@@ -18,8 +18,8 @@ import { Channel } from '@/types';
 import { useChannel } from '@/providers/ChannelProvider';
 
 export default function MessageInput() {
-  const { channel } = useChannel();
-  
+  const { channel, realTimeChannel } = useChannel();
+
   const [message, setMessage] = useState('');
   const [image, setImage] = useState<string | null>(null);
 
@@ -43,8 +43,16 @@ export default function MessageInput() {
 
       return data;
     },
-    onSuccess() {
+    onSuccess(newMessage) {
       queryClient.invalidateQueries({ queryKey: ['messages', channel.id] });
+
+      if (realTimeChannel) {
+        realTimeChannel.send({
+          type: 'broadcast',
+          event: 'message_sent',
+          payload: newMessage,
+        });
+      }
 
       // reset fields
       setMessage('');
