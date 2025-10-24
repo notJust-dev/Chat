@@ -7,40 +7,14 @@ import MessageInput from '@/components/MessageInput';
 import { useQuery } from '@tanstack/react-query';
 import { useSupabase } from '@/providers/SupabaseProvider';
 import { useUser } from '@clerk/clerk-expo';
+import ChannelProvider, { useChannel } from '@/providers/ChannelProvider';
 
-export default function ChannelScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
-
-  const supabase = useSupabase();
+function StackHeader() {
+  const { channel } = useChannel();
   const { user } = useUser();
 
-  const {
-    data: channel,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ['channels', id],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('channels')
-        .select('*, users(*)')
-        .eq('id', id)
-        .throwOnError()
-        .single();
-      return data;
-    },
-  });
-
-  if (isLoading) {
-    return <ActivityIndicator />;
-  }
-
-  if (error || !channel) {
-    return (
-      <View>
-        <Text>Channel not found</Text>
-      </View>
-    );
+  if (!channel) {
+    return null;
   }
 
   const otherUser = channel.users.find((u) => u.id !== user!.id);
@@ -49,13 +23,18 @@ export default function ChannelScreen() {
   if (channel.type === 'direct') {
     channelName = otherUser?.full_name || 'Unknown';
   }
+  return <Stack.Screen options={{ title: channelName }} />;
+}
+
+export default function ChannelScreen() {
+  const { id } = useLocalSearchParams<{ id: string }>();
 
   return (
-    <>
-      <Stack.Screen options={{ title: channelName }} />
+    <ChannelProvider id={id}>
+      <StackHeader />
 
-      <MessageList channel={channel} />
-      <MessageInput channel={channel} />
-    </>
+      <MessageList />
+      <MessageInput />
+    </ChannelProvider>
   );
 }

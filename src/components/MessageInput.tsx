@@ -15,8 +15,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSupabase } from '@/providers/SupabaseProvider';
 import { useUser } from '@clerk/clerk-expo';
 import { Channel } from '@/types';
+import { useChannel } from '@/providers/ChannelProvider';
 
-export default function MessageInput({ channel }: { channel: Channel }) {
+export default function MessageInput() {
+  const { channel } = useChannel();
+  
   const [message, setMessage] = useState('');
   const [image, setImage] = useState<string | null>(null);
 

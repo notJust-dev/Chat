@@ -4,8 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Channel } from '@/types';
 import { useSupabase } from '@/providers/SupabaseProvider';
 import { useUser } from '@clerk/clerk-expo';
+import { useChannel } from '@/providers/ChannelProvider';
 
-export default function MessageList({ channel }: { channel: Channel }) {
+export default function MessageList() {
+  const { channel } = useChannel();
   const supabase = useSupabase();
   const { user } = useUser();
 
