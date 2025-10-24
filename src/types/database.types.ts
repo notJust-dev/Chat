@@ -68,6 +68,45 @@ export type Database = {
         }
         Relationships: []
       }
+      messages: {
+        Row: {
+          channel_id: string | null
+          content: string | null
+          created_at: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          channel_id?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          channel_id?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "channels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           avatar_url: string | null

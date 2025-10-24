@@ -54,8 +54,8 @@ export default function ChannelScreen() {
     <>
       <Stack.Screen options={{ title: channelName }} />
 
-      <MessageList />
-      <MessageInput />
+      <MessageList channel={channel} />
+      <MessageInput channel={channel} />
     </>
   );
 }

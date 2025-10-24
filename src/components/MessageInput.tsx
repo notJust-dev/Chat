@@ -5,22 +5,51 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import { useMutation } from '@tanstack/react-query';
+import { useSupabase } from '@/providers/SupabaseProvider';
+import { useUser } from '@clerk/clerk-expo';
+import { Channel } from '@/types';
 
-export default function MessageInput() {
+export default function MessageInput({ channel }: { channel: Channel }) {
   const [message, setMessage] = useState('');
   const [image, setImage] = useState<string | null>(null);
 
-  const handleSend = () => {
-    console.log('Send message');
-    // store in db
+  const supabase = useSupabase();
+  const { user } = useUser();
 
-    setMessage('');
-    setImage(null);
+  const newMessage = useMutation({
+    mutationFn: async () => {
+      const { data } = await supabase
+        .from('messages')
+        .insert({
+          content: message,
+          user_id: user!.id,
+          channel_id: channel.id,
+        })
+        .select('*')
+        .single()
+        .throwOnError();
+
+      return data;
+    },
+    onSuccess() {
+      // reset fields
+      setMessage('');
+      setImage(null);
+    },
+    onError(error) {
+      Alert.alert('Failed to send message', error.message);
+    },
+  });
+
+  const handleSend = () => {
+    newMessage.mutate();
   };
 
   const pickImage = async () => {
