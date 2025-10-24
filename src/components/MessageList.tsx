@@ -1,16 +1,15 @@
 import { ActivityIndicator, FlatList } from 'react-native';
 import MessageListItem from './MessageListItem';
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Channel } from '@/types';
 import { useSupabase } from '@/providers/SupabaseProvider';
 import { useUser } from '@clerk/clerk-expo';
 
 export default function MessageList({ channel }: { channel: Channel }) {
-  const myId = 'u-1';
-
   const supabase = useSupabase();
   const { user } = useUser();
 
+  // TODO: PAGINATION
   const {
     data: messages,
     error,
@@ -22,6 +21,7 @@ export default function MessageList({ channel }: { channel: Channel }) {
         .from('messages')
         .select('*')
         .eq('channel_id', channel.id)
+        .order('created_at', { ascending: false })
         .throwOnError();
 
       return data;

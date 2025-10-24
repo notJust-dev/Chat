@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSupabase } from '@/providers/SupabaseProvider';
 import { useUser } from '@clerk/clerk-expo';
 import { Channel } from '@/types';
@@ -22,7 +22,9 @@ export default function MessageInput({ channel }: { channel: Channel }) {
 
   const supabase = useSupabase();
   const { user } = useUser();
+  const queryClient = useQueryClient();
 
+  // TODO: Optimistic updates
   const newMessage = useMutation({
     mutationFn: async () => {
       const { data } = await supabase
@@ -39,6 +41,8 @@ export default function MessageInput({ channel }: { channel: Channel }) {
       return data;
     },
     onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ['messages', channel.id] });
+
       // reset fields
       setMessage('');
       setImage(null);
