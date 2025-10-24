@@ -14,21 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
-      Test: {
+      channel_users: {
+        Row: {
+          channel_id: string
+          joined_at: string
+          user_id: string
+        }
+        Insert: {
+          channel_id: string
+          joined_at?: string
+          user_id: string
+        }
+        Update: {
+          channel_id?: string
+          joined_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "channel_users_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "channels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "channel_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      channels: {
         Row: {
           created_at: string
-          id: number
-          test: string | null
+          id: string
+          name: string | null
+          type: Database["public"]["Enums"]["channel-type"]
         }
         Insert: {
           created_at?: string
-          id?: number
-          test?: string | null
+          id?: string
+          name?: string | null
+          type?: Database["public"]["Enums"]["channel-type"]
         }
         Update: {
           created_at?: string
-          id?: number
-          test?: string | null
+          id?: string
+          name?: string | null
+          type?: Database["public"]["Enums"]["channel-type"]
         }
         Relationships: []
       }
@@ -70,7 +106,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      "channel-type": "direct" | "group"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -197,6 +233,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      "channel-type": ["direct", "group"],
+    },
   },
 } as const
