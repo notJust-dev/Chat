@@ -6,6 +6,10 @@ import { useAuth } from '@clerk/clerk-expo';
 import { ActivityIndicator } from 'react-native';
 import SupabaseProvider from '@/providers/SupabaseProvider';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 function RootStack() {
   const { isSignedIn, isLoaded } = useAuth();
 
@@ -28,10 +32,12 @@ function RootStack() {
 
 export default function RootLayout() {
   return (
-    <ClerkProvider tokenCache={tokenCache}>
-      <SupabaseProvider>
-        <RootStack />
-      </SupabaseProvider>
-    </ClerkProvider>
+    <QueryClientProvider client={queryClient}>
+      <ClerkProvider tokenCache={tokenCache}>
+        <SupabaseProvider>
+          <RootStack />
+        </SupabaseProvider>
+      </ClerkProvider>
+    </QueryClientProvider>
   );
 }
