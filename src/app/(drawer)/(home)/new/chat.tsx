@@ -8,7 +8,7 @@ export default function NewChat() {
   };
 
   return (
-    <View className='bg-white'>
+    <View className='bg-white flex-1'>
       <UserList onPress={handleUserPress} />
     </View>
   );
