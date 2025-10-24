@@ -8,6 +8,9 @@ export default function ChannelListScreen() {
   const supabase = useSupabase();
   const { user } = useUser();
 
+  // TODO: Pagination
+  // TODO: Pull down to reload
+  // TODO: Sort by recent first
   const {
     data: channels,
     error,
