@@ -16,6 +16,7 @@ import { useSupabase } from '@/providers/SupabaseProvider';
 import { useUser } from '@clerk/clerk-expo';
 import { Channel } from '@/types';
 import { useChannel } from '@/providers/ChannelProvider';
+import { uploadImage } from '@/utils/storage';
 
 export default function MessageInput() {
   const { channel, realTimeChannel } = useChannel();
@@ -29,13 +30,14 @@ export default function MessageInput() {
 
   // TODO: Optimistic updates
   const newMessage = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (image: string | null) => {
       const { data } = await supabase
         .from('messages')
         .insert({
           content: message,
           user_id: user!.id,
           channel_id: channel.id,
+          image,
         })
         .select('*')
         .single()
@@ -63,8 +65,13 @@ export default function MessageInput() {
     },
   });
 
-  const handleSend = () => {
-    newMessage.mutate();
+  const handleSend = async () => {
+    let supaImage: string | null = null;
+    if (image) {
+      supaImage = await uploadImage(supabase, image);
+    }
+
+    newMessage.mutate(supaImage);
   };
 
   const pickImage = async () => {
